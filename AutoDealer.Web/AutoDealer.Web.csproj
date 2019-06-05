@@ -1077,6 +1077,10 @@
       <Project>{E3F54A20-A523-4EE0-B888-4B1F487BE2C6}</Project>
       <Name>AutoDealer.Service</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AutoDealer.Web.Core\AutoDealer.Web.Core.csproj">
+      <Project>{2DD68F89-6075-415F-BD3D-BCC60F47D89B}</Project>
+      <Name>AutoDealer.Web.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

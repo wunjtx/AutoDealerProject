@@ -1,5 +1,11 @@
+using AutoDealer.Core.Config;
+using AutoDealer.Core.Infrastructure;
+using AutoDealer.Core.Infrastucture;
+using AutoDealer.Core.Log;
+using AutoDealer.Data;
+using AutoDealer.WebCore.Infrastucture;
 using System;
-
+using System.Configuration;
 using Unity;
 
 namespace AutoDealer.Web
@@ -7,21 +13,27 @@ namespace AutoDealer.Web
     /// <summary>
     /// Specifies the Unity configuration for the main container.
     /// </summary>
-    public static class UnityConfig
+    public class UnityConfig
     {
         #region Unity Container
-        private static Lazy<IUnityContainer> container =
-          new Lazy<IUnityContainer>(() =>
-          {
-              var container = new UnityContainer();
-              RegisterTypes(container);
-              return container;
-          });
+        //private static Lazy<IUnityContainer> container =
+        //  new Lazy<IUnityContainer>(() =>
+        //  {
+        //      var container = new UnityContainer();
+        //      RegisterTypes(container);
+        //      return container;
+        //  });
+
+        public static IUnityContainer GetConfiguredContainer()
+        {
+            RegisterTypes(ServiceContainer.Current);
+            return ServiceContainer.Current;
+        }
 
         /// <summary>
         /// Configured Unity Container.
         /// </summary>
-        public static IUnityContainer Container => container.Value;
+        //public static IUnityContainer Container => container.Value;
         #endregion
 
         /// <summary>
@@ -42,6 +54,22 @@ namespace AutoDealer.Web
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType(typeof(ILogger), typeof(NLogLogger));
+            container.RegisterInstance(container);
+
+            ITypeFinder typeFinder = new WebTypeFinder();
+
+            var config = ConfigurationManager.GetSection("applicationConfig") as ApplicationConfig;
+
+            container.RegisterInstance(config);
+
+            var registerTypes = typeFinder.FindClassesOfType<IDependencyRegister>();
+
+            foreach (Type registerType in registerTypes)
+            {
+                var register = (IDependencyRegister)Activator.CreateInstance(registerType);
+                register.RegisterTypes(container);
+            }
         }
     }
 }
