@@ -1,0 +1,258 @@
+﻿@using AutoDealer.Web.ViewModels
+<!DOCTYPE html>
+<!--[if lte IE 8]>              <html class="ie8 no-js" lang="en">     <![endif]-->
+<!--[if IE 9]>					<html class="ie9 no-js" lang="en">     <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="not-ie no-js" lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <title>Car Dealer | All Listings</title>
+
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <link href="~/Plugins/css/style.css" rel="stylesheet" />
+    <link href="~/Plugins/css/skeleton.css" rel="stylesheet" />
+    <link href="~/Plugins/fancybox/jquery.fancybox.css" rel="stylesheet" />
+
+    <!-- HTML5 Shiv + detect touch events -->
+    <script src="~/Plugins/js/modernizr.custom.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body class="menu-1 h-style-1 text-1">
+
+    <div class="wrap">
+
+        <!-- - - - - - - - - - - - - - Header - - - - - - - - - - - - - - - - -->
+
+        <header id="header" class="clearfix">
+
+            <a href="/Home/Index" id="logo"> <img src="~/Files/images/logo.png" alt="Car Dealer" /> </a>
+
+            <div class="widget-container widget_search">
+
+                <span class="call"><span>+1 234</span> 567-8901</span><br />
+
+                <span class="adds">xxx Street, xxx xxx, xx, xxxx</span>
+
+                <form action="/Home/Search" id="searchform" method="get">
+                    <p>
+                        <input type="text" id="search" placeholder="Search" />
+                        <button type="submit" id="searchsubmit"></button>
+                    </p>
+                </form><!--/ #searchform-->
+
+            </div><!--/ .widget-container-->
+
+            <nav id="navigation" class="navigation">
+
+                <ul>
+                    <li class="current-menu-item"><a href="/Home/Index">Home</a></li>
+                    <li> <a href="/Home/BrowseBy">Browse By</a> </li>
+                </ul>
+
+            </nav><!--/ #navigation-->
+
+        </header><!--/ #header-->
+        <!-- - - - - - - - - - - - - - end Header - - - - - - - - - - - - - - - - -->
+
+
+        <div class="main">
+
+            <!-- - - - - - - - - - - - - - - Container - - - - - - - - - - - - - - - - -->
+
+            <section class="container sbl clearfix">
+
+                <!-- - - - - - - - - - - - - - - Content - - - - - - - - - - - - - - - - -->
+
+                <section id="content" class="twelve columns">
+
+                    <div class="recent-list-cars">
+
+                        <h3 class="widget-title"><span>Recent</span> Automobiles</h3>
+
+                        <ul class="recent-list-cars clearfix">
+
+                            <li>
+                                <a href="one-products.html" class="single-image picture">
+                                    <img src="images/temp/thumb-1.jpg" alt="" />
+                                </a>
+
+                                <a href="one-products.html" class="list-meta">
+                                    <h6 class="title-list-item">2009 Aston Martin DB9</h6>
+                                </a>
+
+                                <div class="detailed">
+                                    <span class="cost">$8.966</span>
+                                    <span>1.4i TS 5Dr</span> <br />
+                                    <b>23000 Miles</b>
+                                </div><!--/ .detailed-->
+
+                                <a href="one-products.html" class="button orange">Details</a>
+                                <label class="compare"><input type="checkbox" />Compare</label>
+
+                            </li>
+
+
+
+                        </ul><!--/ .recent-list-cars-->
+
+                    </div><!--/ .recent-list-cars-->
+
+                    <div class="wp-pagenavi clearfix">
+                        @{ QuickSearchModel page = ViewBag.SearchModel as QuickSearchModel;
+                            <span class="pages">Page @page.PageIndex of @page.PageTotal</span>
+                            @if (page.PageIndex >= 2)
+                            {
+                                <a class="prevpostslink" href="/Home/BrowseBy/@page.PageIndex-1"></a>
+                            }
+                            else
+                            {
+                                <a class="prevpostslink" href="/Home/BrowseBy/@page.PageIndex"></a>
+                            }
+                            <span class="current">@page.PageIndex</span>
+                            <a class="page" href="/Home/BrowseBy/@page.PageIndex">@page.PageIndex</a>
+                            @if (page.PageIndex >= page.PageTotal)
+                            {
+                                <a class="nextpostslink" href="/Home/BrowseBy/@page.PageIndex"></a>
+                            }
+                            else
+                            {
+                                <a class="nextpostslink" href="/Home/BrowseBy/@page.PageIndex+1"></a>
+                            }
+                        }
+                    </div><!--/ .wp-pagenavi-->
+
+                </section><!--/ #content-->
+                <!-- - - - - - - - - - - - - - end Content - - - - - - - - - - - - - - - - -->
+                <!-- - - - - - - - - - - Search Panel - - - - - - - - - - - - - -->
+                @{
+                    OptionsModel options = ViewBag.Options as OptionsModel;
+
+                    <div class="widget_custom_search">
+
+                        <h3 class="widget-title">Quick Search</h3>
+
+                        <form action="/Home/QuickSearch" id="boxpanel" class="form-panel" method="post">
+                            @Html.AntiForgeryToken()
+                            <fieldset>
+                                <label for="manufacturer">Manufacturer:</label>
+                                <select id="Maker" name="Maker">
+                                    @foreach (var maker in options.Makers)
+                                    {
+                                        <option value="@maker.Name" />@maker.Name
+                                    }
+                                </select>
+                            </fieldset>
+
+                            <fieldset>
+                                <label for="MinPrice">Min Price:</label>
+                                <input id="MinPrice" name="MaiPrice" type="text" />
+                            </fieldset>
+
+                            <fieldset>
+                                <label for="trans">Max Price:</label>
+                                <input id="MaxPrice" name="MaxPrice" type="text" />
+                            </fieldset>
+
+                            <fieldset>
+                                <label for="trans">Transmission:</label>
+                                <select id="trans" name="trans">
+                                    @foreach (var tran in options.Trans)
+                                    {
+                                        <option value="@tran.Transmission" />@tran.Transmission
+                                    }
+
+                                </select>
+                            </fieldset>
+
+                            <fieldset>
+                                <label for="trans">Max Price:</label>
+                                <input id="MaxPrice" name="MaxPrice" type="text" />
+                            </fieldset>
+
+                            <fieldset>
+                                <label for="Style">Body Type:</label>
+                                <select id="Style" name="Style">
+                                    @foreach (var style in options.DriveTypes)
+                                    {
+                                        <option value="@style.DriveType" />@style.DriveType
+                                    }
+                                </select>
+                            </fieldset>
+
+                            <div class="clear"></div>
+                            <button id="submitSearch" class="submit-search" type="submit">Search</button>
+
+                        </form><!--/ .form-panel-->
+
+                    </div><!--/ .main-search-panel-->
+                }
+                <!-- - - - - - - - - - end Search Panel - - - - - - - - - - - - -->
+
+            </section><!--/.container -->
+            <!-- - - - - - - - - - - - - end Container - - - - - - - - - - - - - - - - -->
+
+        </div><!--/ .main-->
+        <!-- - - - - - - - - - - - - - - Footer - - - - - - - - - - - - - - - - -->
+
+        <footer id="footer" class="container clearfix">
+
+            <section class="container clearfix">
+
+
+                <div class="adjective clearfix">
+
+                    <p class="copyright">Copyright  </a></p>
+
+                </div><!--/ .adjective-->
+
+            </section><!--/ .container-->
+
+        </footer><!--/ #footer-->
+        <!-- - - - - - - - - - - - - - - end Footer - - - - - - - - - - - - - - - - -->
+
+    </div><!--/ .wrap-->
+
+    <div class="account-wrapper">
+
+        <form class="form-reg" method="post" action="">
+
+            <a href="#" class="log">Login</a>
+
+            <p>
+                <label>Username*</label>
+                <input class="input-medium" type="text" />
+            </p>
+
+            <p>
+                <label>Password*</label>
+                <input class="input-medium" type="password" />
+            </p>
+
+            <p class="forgot-pass">
+                <a href="#">Forgot your password?</a>
+            </p>
+
+            <p>
+                <a href="/Account/User/Login" class="button dark enter-btn">Login</a>
+                <a href="/Account/User/Add" class="button dark enter-btn">Create an account</a>
+            </p>
+
+        </form><!--/ .form-reg-->
+
+    </div><!--/ .account-wrapper-->
+
+    <script src="~/Plugins/js/jquery-1.7.2.min.js"></script>
+    <script src="~/Plugins/js/custom.js"></script>
+    <script src="~/Plugins/sliders/flexslider/jquery.flexslider-min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="~/Plugins/js/selectivizr-and-extra-selectors.min.js"></script>
+    <![endif]-->
+
+</body>
+</html>
+
