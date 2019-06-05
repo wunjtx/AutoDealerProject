@@ -37,7 +37,6 @@ namespace AutoDealer.Web.Controllers
             this.AutoService = autoService;
         }
         [HttpGet]
-        [ValidateAntiForgeryToken]
         [AllowAnonymous]
         public ActionResult Index()
         {

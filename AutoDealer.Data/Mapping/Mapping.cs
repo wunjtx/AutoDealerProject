@@ -27,7 +27,7 @@ namespace AutoDealer.Data.Mapping
             this.Property(a => a.Condition).HasMaxLength(32);
             this.Property(a => a.Engine).HasMaxLength(32);
             this.Property(a => a.DriveType).HasMaxLength(32);
-            this.HasOptional(a => a.Img);
+            this.HasMany(a => a.Img);
             this.Property(a => a.Status);
             this.Property(a => a.Sort);
         }
@@ -39,8 +39,8 @@ namespace AutoDealer.Data.Mapping
         {
             this.HasKey(m => m.ID);
             this.Property(m => m.Name).IsRequired().HasMaxLength(64);
-            this.HasOptional(m=>m.Brand);
-            this.HasOptional(m=>m.Auto);
+            this.HasMany(m=>m.Brand);
+            this.HasMany(m=>m.Auto);
         }
     }
 
@@ -50,7 +50,7 @@ namespace AutoDealer.Data.Mapping
         {
             this.HasKey(b => b.ID);
             this.Property(b => b.Name).IsRequired().HasMaxLength(64);
-            this.HasOptional(b=>b.Auto);
+            this.HasMany(b=>b.Auto);
         }
     }
 
